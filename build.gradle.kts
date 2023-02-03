@@ -11,6 +11,7 @@ repositories {
 }
 
 dependencies {
+    implementation("org.freemarker:freemarker:2.3.31")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.1")
@@ -27,6 +28,9 @@ sourceSets {
     main {
         kotlin {
             srcDirs("app/src/main/kotlin")
+        }
+        resources {
+            srcDirs("app/src/main/resources")
         }
     }
     test {
