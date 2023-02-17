@@ -11,13 +11,13 @@ repositories {
 }
 
 dependencies {
+    implementation("com.beust:jcommander:1.78")
     implementation("org.freemarker:freemarker:2.3.31")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+
+    implementation(kotlin("stdlib-jdk8"))
 
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.1")
-
-    implementation("com.google.guava:guava:31.1-jre")
-    implementation(kotlin("stdlib-jdk8"))
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 }
 
 application {
