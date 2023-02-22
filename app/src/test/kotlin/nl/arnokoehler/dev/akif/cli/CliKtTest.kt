@@ -6,8 +6,10 @@ import org.junit.jupiter.api.Test
 class CliKtTest {
     @Test
     fun appHasAGreeting() {
-        val classUnderTest = CliApp()
-        assertEquals(file, classUnderTest.writeFile())
+        val classUnderTest = CliRunner()
+        classUnderTest.run()
+
+        TODO("Add assertions")
     }
 }
 

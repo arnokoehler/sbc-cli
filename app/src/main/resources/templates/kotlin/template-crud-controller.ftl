@@ -1,4 +1,4 @@
-package nl.arnokoehler.akif.sbc.sbcdemo
+package ${packageName}
 
 import dev.akif.crud.*
 import org.springframework.stereotype.Service
