@@ -46,3 +46,42 @@ This formula downloads the JAR file from https://example.com/my-kotlin-app/my-ko
 Once you've created the formula file, you can add it to a tap or submit it to the main Homebrew repository by following the instructions on the Homebrew website.
 
 see: https://docs.brew.sh/Formula-Cookbook
+
+
+# Man Page
+
+1. Write a man page in man format, using a text editor. The man page should describe the usage and functionality of your program.
+
+2. Convert the man page to a compressed format using the gzip command. For example, if your man page is in a file called mycommand.1, you can run the following command to compress it:
+
+```bash
+gzip mycommand.1
+```
+This will create a compressed file called mycommand.1.gz.
+
+3. Copy the compressed man page to the appropriate location on the target Linux system. The location may vary depending on the Linux distribution and the version of the man program, but a common location is /usr/share/man/man1/. You can copy the man page using the cp command, like this:
+
+```bash
+cp mycommand.1.gz /usr/share/man/man1/
+```
+
+4. Update the man page index to include your new man page. You can do this by running the mandb command with appropriate privileges (e.g., using sudo). The mandb command will update the man page database and include your new man page in the index. For example:
+
+```bash
+sudo mandb
+```
+
+This may take some time to run, especially if there are many man pages on the system.
+
+Once you've completed these steps, users can view your man page by running the man command with the appropriate section and name of your command. For example, if your program is called mycommand and you've added a man page in section 1, users can run:
+
+```bash
+man 1 mycommand
+```
+
+This will display your man page in the terminal. Users can use the usual man page navigation commands (e.g., j and k to move up and down, q to quit) to view the contents of the man page.
+
+
+
+
+
