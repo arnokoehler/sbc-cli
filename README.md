@@ -134,3 +134,8 @@ Note available as a dependency https://mvnrepository.com/artifact/org.springfram
 ```ruby
 depends_on "<spring-boot-cli>"
 ```
+
+# Idea: create a web interface for this cli
+
+Run the cli in a docker container and create a web interface for it, resulting in a web based spring boot crud setup in a compressed folder
+
