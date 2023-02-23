@@ -120,8 +120,16 @@ Note that calling another CLI program from your own CLI program may have securit
 
 ### TODO add the dependecy to the ruby script:
 
-See if we can include the spring boot cli https://docs.spring.io/spring-boot/docs/current/reference/html/cli.html#cli-installation
-as a dependency in the brew formula
+See if we can include the spring boot cli https://docs.spring.io/spring-boot/docs/current/reference/html/cli.html cli-installation
+as a https://repo.spring.io/ui/native/release/org/springframework/boot/spring-boot-cli/3.0.2/ dependency in the brew formula
+
+```bash
+$ brew tap spring-io/tap
+$ brew install spring-boot
+```
+
+Or as a Jar dependency in the app itself
+Note available as a dependency https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-cli
 
 ```ruby
 depends_on "<spring-boot-cli>"
