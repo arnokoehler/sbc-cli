@@ -82,6 +82,47 @@ man 1 mycommand
 This will display your man page in the terminal. Users can use the usual man page navigation commands (e.g., j and k to move up and down, q to quit) to view the contents of the man page.
 
 
+# Creating a Spring Boot skeleton via this cli 
 
+If you want to call another command-line program from your own CLI program, you can use the ProcessBuilder class in Java or Kotlin.
 
+Here's an example of how you can call the ls command from your CLI program in Kotlin:
 
+```kotlin
+import java.lang.ProcessBuilder
+
+fun main(args: Array<String>) {
+    val processBuilder = ProcessBuilder("ls", "-l")
+    val process = processBuilder.start()
+
+    // Read the output from the child process
+    val input = process.inputStream.bufferedReader()
+    val output = input.readText()
+
+    // Wait for the child process to complete
+    val exitCode = process.waitFor()
+
+    // Print the output and exit code
+    println("Output: $output")
+    println("Exit code: $exitCode")
+}
+```
+
+In this example, we create a new ProcessBuilder instance and pass the command and its arguments as a list of strings. We then call the start() method on the ProcessBuilder instance to start the child process.
+
+We then read the output from the child process using the inputStream property of the Process instance, and wait for the child process to complete using the waitFor() method.
+
+Finally, we print the output and exit code of the child process.
+
+You can modify this code to call any command-line program that you want from your own CLI program, simply by changing the command and its arguments in the ProcessBuilder constructor.
+
+Note that calling another CLI program from your own CLI program may have security implications, especially if the command and its arguments are passed directly from user input. Be sure to sanitize and validate any user input before passing it to the ProcessBuilder constructor to prevent potential security vulnerabilities.
+
+### TODO add the dependecy to the ruby script:
+
+See if we can include the spring boot cli https://docs.spring.io/spring-boot/docs/current/reference/html/cli.html#cli-installation
+as a dependency in the brew formula
+
+```ruby
+depends_on "<spring-boot-cli>"
+```
