@@ -31,6 +31,12 @@ class CliRunner {
     private var packageName: String = ""
 
     @Parameter(
+        names = ["-initializr"],
+        description = "Path to a Spring Initializr ZIP file to use as starting point"
+    )
+    private var initializr: String = ""
+
+    @Parameter(
         names = ["-targetDir"],
         description = "The name of the resource to generate"
     )
@@ -43,6 +49,7 @@ class CliRunner {
                 variantStyle = variantStyle,
                 resourceName = resourceName,
                 packageName = packageName,
+                initializrZip = initializr,
                 targetDir = targetDir
             ), FileCreator()
         ).execute()

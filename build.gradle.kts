@@ -13,6 +13,9 @@ repositories {
 dependencies {
     implementation("com.beust:jcommander:1.78")
     implementation("org.freemarker:freemarker:2.3.31")
+    implementation("org.apache.commons:commons-lang3:3.0")
+    implementation("commons-io:commons-io:2.11.0")
+
 
     implementation(kotlin("stdlib-jdk8"))
 
