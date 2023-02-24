@@ -1,11 +1,12 @@
 package nl.arnokoehler.dev.akif.cli
 
 data class RawInput(
-    val languageVariant: LanguageVariant?,
-    val variantStyle: StyleVariant?,
-    val resourceName: String?,
-    val packageName: String?,
-    val targetDir: String?
+    var languageVariant: LanguageVariant?,
+    var variantStyle: StyleVariant?,
+    var resourceName: String?,
+    var packageName: String?,
+    var initializrZip: String?,
+    var targetDir: String?
 )
 
 data class ApplicationParameters(

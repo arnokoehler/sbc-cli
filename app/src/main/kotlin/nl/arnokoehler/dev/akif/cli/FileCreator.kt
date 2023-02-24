@@ -1,6 +1,7 @@
 package nl.arnokoehler.dev.akif.cli
 
 import freemarker.template.Configuration
+import org.apache.commons.lang3.StringUtils
 import java.io.File
 import java.io.StringWriter
 
@@ -62,7 +63,13 @@ class FileCreator {
 
     private fun createFolders(packageName: String, targetDir: String): Pair<String, Boolean> {
         println("Creating folder structure: $packageName")
-        val sourceFolder = "$targetDir/$packageName"
+        val sourceFolder = StringUtils.stripEnd(targetDir, "/") + "/" + StringUtils.stripStart(
+            StringUtils.replaceChars(
+                packageName,
+                ".",
+                "/"
+            ), "/"
+        )
         val resultMkdir: Boolean = File(sourceFolder).mkdirs()
         return Pair(sourceFolder, resultMkdir)
     }
