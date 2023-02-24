@@ -1,20 +1,37 @@
 package nl.arnokoehler.dev.akif.cli
 
 import freemarker.template.Configuration
+import java.io.File
 import java.io.StringWriter
+
 
 class FileCreator {
 
     private val templateResolver = TemplateResolver()
 
-    fun writeFile(resourceName: String, packageName: String, languageVariant: LanguageVariant?, variantStyle: String?) {
+    fun writeFile(
+        resourceName: String,
+        packageName: String,
+        languageVariant: LanguageVariant?,
+        variantStyle: String?,
+        targetDir: String
+    ) {
         val resolvedTemplates = templateResolver.resolveTemplates(languageVariant)
+
+        val (sourceFolder, resultMkdir: Boolean) = pair(
+            packageName,
+            targetDir
+        )
+
+        if (checkIfCanBeOverwritten(resultMkdir)) {
+            return
+        }
 
         for (resolvedTemplate in resolvedTemplates) {
             val template = processTemplate(resolvedTemplate.value, resourceName, packageName)
-            println("Creating folder structure: $packageName")
+
             println("Writing file: ${resolvedTemplate.key}.kt")
-            println(template.toString())
+            File("$sourceFolder/${resolvedTemplate.key}.kt").writeBytes(template.toString().toByteArray())
         }
     }
 
@@ -30,4 +47,26 @@ class FileCreator {
         template.process(data, writer)
         return writer
     }
+
+    private fun checkIfCanBeOverwritten(resultMkdir: Boolean): Boolean {
+        if (!resultMkdir) {
+            println("Folder structure already exists, contents will be overwritten")
+            println("Do you want to continue? (y/n)")
+            val answer = readlnOrNull() ?: "n"
+            if (answer != "y") {
+                println("Exiting")
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun pair(packageName: String, targetDir: String): Pair<String, Boolean> {
+        println("Creating folder structure: $packageName")
+        val sourceFolder = "$targetDir/$packageName"
+        val resultMkdir: Boolean = File(sourceFolder).mkdirs()
+        return Pair(sourceFolder, resultMkdir)
+    }
+
+
 }

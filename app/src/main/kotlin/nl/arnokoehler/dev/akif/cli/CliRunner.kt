@@ -30,12 +30,19 @@ class CliRunner() {
     )
     private var packageName: String = ""
 
+    @Parameter(
+        names = ["-targetDir"],
+        description = "The name of the resource to generate"
+    )
+    private var targetDir: String = "/Users/arnokoehler/Documents/Intellij/iodigital-com/sbc-cli/build/generated-sources/kotlin/main"
+
     fun run() {
         CommanLineInterfaceApplication(
             languageVariant = languageVariant,
             variantStyle = variantStyle,
             resourceName = resourceName,
-            packageName = packageName
+            packageName = packageName,
+            targetDir = targetDir
         ).menuOptions()
     }
 }

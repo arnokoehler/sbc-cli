@@ -3,10 +3,11 @@ package nl.arnokoehler.dev.akif.cli
 import kotlin.system.exitProcess
 
 class CommanLineInterfaceApplication (
-    var languageVariant: LanguageVariant?,
-    var variantStyle: String?,
-    var resourceName: String,
-    var packageName: String
+    private var languageVariant: LanguageVariant?,
+    private var variantStyle: String?,
+    private var resourceName: String,
+    private var packageName: String,
+    private val targetDir: String
 ) {
 
     fun menuOptions() {
@@ -44,7 +45,13 @@ class CommanLineInterfaceApplication (
             println("package name set to: $packageName")
         }
         println("This will generate the resources in the following language: $languageVariant for the resource: $resourceName")
-        FileCreator().writeFile(resourceName, packageName, languageVariant, variantStyle)
+        FileCreator().writeFile(
+            resourceName,
+            packageName,
+            languageVariant,
+            variantStyle,
+            targetDir
+        )
     }
 
 }
