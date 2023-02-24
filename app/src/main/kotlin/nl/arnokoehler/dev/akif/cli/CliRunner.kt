@@ -9,7 +9,7 @@ class CliRunner {
         names = ["-resourceName"],
         description = "The name of the resource to generate"
     )
-    private var resourceName: String = ""
+    private var resourceName: String? = null
 
     @Parameter(
         names = ["-variantStyle"],
@@ -28,19 +28,19 @@ class CliRunner {
         names = ["-packageName"],
         description = "The name of the resource to generate"
     )
-    private var packageName: String = ""
+    private var packageName: String? = null
 
     @Parameter(
         names = ["-initializr"],
         description = "Path to a Spring Initializr ZIP file to use as starting point"
     )
-    private var initializr: String = ""
+    private var initializr: String? = null
 
     @Parameter(
         names = ["-targetDir"],
         description = "The name of the resource to generate"
     )
-    private var targetDir: String = ""
+    private var targetDir: String? = null
 
     fun run() {
         Menu(
