@@ -1,5 +1,7 @@
 package nl.arnokoehler.dev.akif.cli
 
+import java.util.*
+
 data class RawInput(
     val languageVariant: LanguageVariant?,
     val variantStyle: StyleVariant?,
@@ -39,7 +41,7 @@ abstract class InputHandler<T> {
 
 class ResourceNameInputHandler : InputHandler<String>() {
     override fun handleInput(input: String?): String {
-        if (input != null) {
+        if (!input.isNullOrEmpty()) {
             return input
         }
         println("Please provide a resource name")
@@ -51,7 +53,7 @@ class ResourceNameInputHandler : InputHandler<String>() {
 
 class PackageNameInputHandler : InputHandler<String>() {
     override fun handleInput(input: String?): String {
-        if (input != null) {
+        if (!input.isNullOrEmpty()) {
             return input
         }
         println("Please provide a package name")
