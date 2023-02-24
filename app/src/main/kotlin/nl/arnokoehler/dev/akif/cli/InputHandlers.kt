@@ -40,7 +40,7 @@ abstract class InputHandler<T> {
 
 class ResourceNameInputHandler : InputHandler<String>() {
     override fun handleInput(input: String?): String {
-        if (input != null) {
+        if (!input.isNullOrEmpty()) {
             return input
         }
         println("Please provide a resource name")
@@ -52,7 +52,7 @@ class ResourceNameInputHandler : InputHandler<String>() {
 
 class PackageNameInputHandler : InputHandler<String>() {
     override fun handleInput(input: String?): String {
-        if (input != null) {
+        if (!input.isNullOrEmpty()) {
             return input
         }
         println("Please provide a package name")
@@ -93,7 +93,7 @@ class VariantStyleInputHandler : InputHandler<StyleVariant>() {
 }
 
 fun String.convertToPackageWithResourceName(resourceName: String): String = when {
-    this.contains(resourceName) -> this
+    this.contains(resourceName, ignoreCase = true) -> this
     else -> this + resourceName.pluralize()
 }
 

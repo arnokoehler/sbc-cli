@@ -6,26 +6,26 @@ import org.springframework.stereotype.Component
 import java.time.Instant
 
 @Component
-class ${resourceName}Mapper: CRUDMapper<Long, ${resourceName}Entity, ${resourceName}, Create${resourceName}, Update${resourceName}>,
-CRUDDTOMapper<Long, ${resourceName}, ${resourceName}DTO, Create${resourceName}, Update${resourceName}, Create${resourceName}DTO, Update${resourceName}DTO> {
-override fun entityToBeCreatedFrom(createModel: Create${resourceName}, now: Instant): ${resourceName}Entity =
+class ${resourceNameUppercase}Mapper: CRUDMapper<Long, ${resourceNameUppercase}Entity, ${resourceNameUppercase}, Create${resourceNameUppercase}, Update${resourceNameUppercase}>,
+CRUDDTOMapper<Long, ${resourceNameUppercase}, ${resourceNameUppercase}DTO, Create${resourceNameUppercase}, Update${resourceNameUppercase}, Create${resourceNameUppercase}DTO, Update${resourceNameUppercase}DTO> {
+override fun entityToBeCreatedFrom(createModel: Create${resourceNameUppercase}, now: Instant): ${resourceNameUppercase}Entity =
 TODO("Not yet implemented")
 
-override fun entityToModel(entity: ${resourceName}Entity): ${resourceName} =
+override fun entityToModel(entity: ${resourceNameUppercase}Entity): ${resourceNameUppercase} =
 TODO("Not yet implemented")
 
-override fun updateEntityWith(entity: ${resourceName}Entity, updateModel: Update${resourceName}) {
+override fun updateEntityWith(entity: ${resourceNameUppercase}Entity, updateModel: Update${resourceNameUppercase}) {
 entity.apply {
 TODO("Not yet implemented")
 }
 }
 
-override fun createDTOToCreateModel(createDTO: Create${resourceName}DTO): Create${resourceName} =
+override fun createDTOToCreateModel(createDTO: Create${resourceNameUppercase}DTO): Create${resourceNameUppercase} =
 TODO("Not yet implemented")
 
-override fun modelToDTO(model: ${resourceName}): ${resourceName}DTO =
+override fun modelToDTO(model: ${resourceNameUppercase}): ${resourceNameUppercase}DTO =
 TODO("Not yet implemented")
 
-override fun updateDTOToUpdateModel(updateDTO: Update${resourceName}DTO): Update${resourceName} =
+override fun updateDTOToUpdateModel(updateDTO: Update${resourceNameUppercase}DTO): Update${resourceNameUppercase} =
 TODO("Not yet implemented")
 }
