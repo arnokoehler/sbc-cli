@@ -8,17 +8,17 @@ import org.springframework.stereotype.Repository
 import java.time.Instant
 
 @Repository
-interface ${resourceName}Repository : CRUDRepository<Long, ${resourceName}Entity>
+interface ${resourceNameUppercase}Repository : CRUDRepository<Long, ${resourceNameUppercase}Entity>
 
 @Entity
-class ${resourceName}Entity(
+class ${resourceNameUppercase}Entity(
 @Id override var id: Long?,
 ${entityFields}
 override var version: Int?,
 override var createdAt: Instant?,
 override var updatedAt: Instant?,
 override var deletedAt: Instant?
-) : CRUDEntity<Long, ${resourceName}Entity>(id, version, createdAt, updatedAt, deletedAt) {
+) : CRUDEntity<Long, ${resourceNameUppercase}Entity>(id, version, createdAt, updatedAt, deletedAt) {
 constructor() : this(
 id = null,
 name = null,
@@ -28,7 +28,7 @@ updatedAt = null,
 deletedAt = null
 )
 
-    override fun toString(): String {
-        return "${resourceName}Entity(id=$id, ${entityFields}, version=$version, createdAt=$createdAt, updatedAt=$updatedAt, deletedAt=$deletedAt)"
-    }
+override fun toString(): String {
+return "${resourceNameUppercase}Entity(id=$id, ${entityFields}, version=$version, createdAt=$createdAt, updatedAt=$updatedAt, deletedAt=$deletedAt)"
+}
 }

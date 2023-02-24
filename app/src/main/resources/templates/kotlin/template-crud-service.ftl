@@ -6,21 +6,17 @@ import org.springframework.stereotype.Service
 import java.time.Instant
 
 @Service
-class ${resourceName}Service(
+class ${resourceNameUppercase}Service(
 instantProvider: InstantProvider,
-repository: CRUDRepository<Long, ${resourceName}Entity>,
-mapper: ${resourceName}Mapper
-) : CRUDService<Long, ${resourceName}Entity, ${resourceName}, Create${resourceName}, Update${resourceName}, ${resourceName}Mapper>("${resourceName}", instantProvider, repository, mapper)
+repository: CRUDRepository<Long, ${resourceNameUppercase}Entity>,
+mapper: ${resourceNameUppercase}Mapper
+) : CRUDService<Long, ${resourceNameUppercase}Entity, ${resourceNameUppercase}, Create${resourceNameUppercase}, Update${resourceNameUppercase}, ${resourceNameUppercase}Mapper>("${resourceNameUppercase}", instantProvider, repository, mapper)
 
-data class Create${resourceName}(
-${dtoFields}
-) : CRUDCreateModel
+data class Create${resourceNameUppercase}(${dtoFields}) : CRUDCreateModel
 
-data class Update${resourceName}(
-${dtoFields}
-) : CRUDUpdateModel
+data class Update${resourceNameUppercase}(${dtoFields}) : CRUDUpdateModel
 
-data class ${resourceName}(
+data class ${resourceNameUppercase}(
 val id: Long,
 ${dtoFields}
 val version: Int,
