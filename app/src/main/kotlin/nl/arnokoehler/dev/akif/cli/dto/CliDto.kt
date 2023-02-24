@@ -1,7 +1,7 @@
 package nl.arnokoehler.dev.akif.cli.dto
 
 class CliDto {
-    val dtos: MutableList<DtoEntry> = mutableListOf()
+    val dataTransferObjects: MutableList<DtoEntry> = mutableListOf()
 
     fun askUser(): List<DtoEntry> {
         println("Do you want to generate your DTOs now?")
@@ -18,16 +18,16 @@ class CliDto {
         }
 
         // Print all the dtos
-        dtos.forEach { println(it)}
+        dataTransferObjects.forEach { println(it)}
 
-        return dtos
+        return dataTransferObjects
     }
 
     fun createResource() {
         // Create a new DTO
         //   ask for name of dto
         //       ask for field entry
-        createDto().also { dtos.add(it) }
+        createDto().also { dataTransferObjects.add(it) }
     }
 
     fun createDto(): DtoEntry {

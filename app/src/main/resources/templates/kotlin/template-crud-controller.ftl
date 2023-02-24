@@ -14,13 +14,15 @@ service,
 mapper
 )
 
-data class Create${resourceName}DTO(val name: String) : CRUDCreateDTO
+data class Create${resourceName}DTO(
+  ${dtoFields}
+) : CRUDCreateDTO
 
 data class Update${resourceName}DTO(val name: String) : CRUDUpdateDTO
 
 data class ${resourceName}DTO(
 val id: Long,
-val name: String,
+${dtoFields}
 val createdAt: Instant,
 val updatedAt: Instant
 ) : CRUDDTO<Long> {

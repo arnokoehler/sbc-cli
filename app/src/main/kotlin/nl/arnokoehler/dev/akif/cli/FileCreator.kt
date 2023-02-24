@@ -1,6 +1,7 @@
 package nl.arnokoehler.dev.akif.cli
 
 import freemarker.template.Configuration
+import nl.arnokoehler.dev.akif.cli.dto.CliDto
 import java.io.File
 import java.io.StringWriter
 
@@ -9,7 +10,7 @@ class FileCreator {
 
     private val templateResolver = TemplateResolver()
 
-    fun writeFile(applicationParameters: ApplicationParameters) {
+    fun writeFile(applicationParameters: ApplicationParameters, dataTransferObjects: MutableList<CliDto.DtoEntry>) {
         val resolvedTemplates = templateResolver.resolveTemplates(applicationParameters.languageVariant)
 
         val (sourceFolder, folderAlreadyExists: Boolean) = createFolders(

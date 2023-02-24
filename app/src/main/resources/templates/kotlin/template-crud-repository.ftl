@@ -13,7 +13,7 @@ interface ${resourceName}Repository : CRUDRepository<Long, ${resourceName}Entity
 @Entity
 class ${resourceName}Entity(
 @Id override var id: Long?,
-var name: String?,
+${entityFields}
 override var version: Int?,
 override var createdAt: Instant?,
 override var updatedAt: Instant?,
@@ -29,6 +29,6 @@ deletedAt = null
 )
 
 override fun toString(): String {
-return "${resourceName}Entity(id=$id, name=$name, version=$version, createdAt=$createdAt, updatedAt=$updatedAt, deletedAt=$deletedAt)"
+return "${resourceName}Entity(id=$id, ${toStringEntityFelds} version=$version, createdAt=$createdAt, updatedAt=$updatedAt, deletedAt=$deletedAt)"
 }
 }

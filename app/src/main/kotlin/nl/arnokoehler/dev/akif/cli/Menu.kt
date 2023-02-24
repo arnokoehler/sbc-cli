@@ -1,5 +1,6 @@
 package nl.arnokoehler.dev.akif.cli
 
+import nl.arnokoehler.dev.akif.cli.dto.CliDto
 import kotlin.system.exitProcess
 
 class Menu(private val rawInput: RawInput, private val fileCreator: FileCreator) {
@@ -20,7 +21,9 @@ class Menu(private val rawInput: RawInput, private val fileCreator: FileCreator)
 
     private fun createResource() {
         val validatedInput = InputValidator().handleInput(rawInput)
-        fileCreator.writeFile(validatedInput)
+        val cliDto = CliDto()
+        cliDto.askUser()
+        fileCreator.writeFile(validatedInput, cliDto.dataTransferObjects)
     }
 
 }
