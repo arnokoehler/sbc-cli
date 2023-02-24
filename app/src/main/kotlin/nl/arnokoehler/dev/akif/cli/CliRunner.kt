@@ -31,6 +31,13 @@ class CliRunner {
     private var packageName: String? = null
 
     @Parameter(
+        names = ["-idType"],
+        description = "The name type of the Id",
+        converter = ResourceIdTypeConverter::class
+    )
+    private var idType: ResourceIdType? = null
+
+    @Parameter(
         names = ["-initializr"],
         description = "Path to a Spring Initializr ZIP file to use as starting point"
     )
@@ -50,6 +57,7 @@ class CliRunner {
                 resourceName = resourceName,
                 packageName = packageName,
                 initializrZip = initializr,
+                idType = idType,
                 targetDir = targetDir
             ), FileCreator()
         ).execute()

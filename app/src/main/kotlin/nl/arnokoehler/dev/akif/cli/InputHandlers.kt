@@ -6,12 +6,14 @@ data class RawInput(
     var resourceName: String?,
     var packageName: String?,
     var initializrZip: String?,
+    var idType: ResourceIdType?,
     var targetDir: String?
 )
 
 data class ApplicationParameters(
     val languageVariant: LanguageVariant,
     val variantStyle: StyleVariant,
+    val idType: ResourceIdType,
     val resourceName: String,
     val packageName: String,
     val targetDir: String
@@ -25,6 +27,7 @@ class InputValidator() {
             resourceName = ResourceNameInputHandler().handleInput(rawInput.resourceName),
             packageName = PackageNameInputHandler().handleInput(rawInput.packageName),
             variantStyle = VariantStyleInputHandler().handleInput(rawInput.variantStyle),
+            // idType =
             targetDir = rawInput.targetDir ?: throw IllegalArgumentException("Target directory cannot be empty")
         )
 
@@ -91,6 +94,22 @@ class VariantStyleInputHandler : InputHandler<StyleVariant>() {
         return variantStyle
     }
 }
+
+class ResourceIdTypeInputHandler : InputHandler<ResourceIdType>() {
+    override fun handleInput(input: ResourceIdType?): ResourceIdType {
+        if (input != null) {
+            return input
+        }
+        println("Please provide a type for the primary ID")
+        for (value in StyleVariant.values()) {
+            println("${value.ordinal + 1} ${value.name}")
+        }
+        val resourceIdType = ResourceIdTypeConverter().convert(readlnOrNull() ?: "long")
+        println("variant style set to: $resourceIdType")
+        return resourceIdType
+    }
+}
+
 
 fun String.convertToPackageWithResourceName(resourceName: String): String = when {
     this.contains(resourceName, ignoreCase = true) -> this
