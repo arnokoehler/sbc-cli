@@ -3,11 +3,29 @@ package nl.arnokoehler.dev.akif.cli.dto
 class CliDto {
     val dtos: MutableList<DtoEntry> = mutableListOf()
 
+    fun askUser() {
+        println("Do you want to generate your DTOs now?")
+
+        loop@ while (true) {
+            println("Please select an option:")
+            println("y: Create a DTO")
+            println("n: Skip process")
+            when (readlnOrNull() ?: "n") {
+                "y" -> createResource()
+                "n" -> break@loop
+                else -> println("Please select a valid option")
+            }
+        }
+
+        // Print all the dtos
+        dtos.forEach { println(it)}
+    }
+
     fun createResource() {
         // Create a new DTO
         //   ask for name of dto
         //       ask for field entry
-        println(createDto())
+        createDto().also { dtos.add(it) }
     }
 
     fun createDto(): DtoEntry {
@@ -44,24 +62,27 @@ class CliDto {
         // Ask for name of field
         // Ask for type of field
 
-        // return type
-
-        return DtoFieldEntry("fieldName", "fieldType")
-    }
-
-    fun askUser() {
-        println("Do you want to generate your DTOs now?")
-
-        loop@ while (true) {
-            println("Please select an option:")
-            println("y: Create a DTO")
-            println("n: Skip process")
-            when (readlnOrNull() ?: "n") {
-                "y" -> createResource()
-                "n" -> break@loop
-                else -> println("Please select a valid option")
+        var fieldName: String
+        nameLoop@ while (true) {
+            println ("Please enter the name of the field")
+            fieldName = readlnOrNull() ?: ""
+            when (fieldName) {
+                "" -> continue@nameLoop
+                else -> break@nameLoop
             }
         }
+
+        var fieldType: String
+        typeLoop@ while (true) {
+            println ("Please enter the type for field '$fieldName'")
+            fieldType = readlnOrNull() ?: ""
+            when (fieldType) {
+                "" -> continue@typeLoop
+                else -> break@typeLoop
+            }
+        }
+
+        return DtoFieldEntry(fieldName, fieldType)
     }
 
     data class DtoEntry(
