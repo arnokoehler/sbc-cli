@@ -1,7 +1,5 @@
 package nl.arnokoehler.dev.akif.cli
 
-import java.util.*
-
 data class RawInput(
     val languageVariant: LanguageVariant?,
     val variantStyle: StyleVariant?,
@@ -94,7 +92,7 @@ class VariantStyleInputHandler : InputHandler<StyleVariant>() {
 }
 
 fun String.convertToPackageWithResourceName(resourceName: String): String = when {
-    this.contains(resourceName) -> this
+    this.contains(resourceName, ignoreCase = true) -> this
     else -> this + resourceName.pluralize()
 }
 

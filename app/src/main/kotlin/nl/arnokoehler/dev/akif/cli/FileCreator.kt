@@ -43,7 +43,11 @@ class FileCreator {
         cfg.templateLoader = freemarker.cache.ClassTemplateLoader(CliRunner::class.java.classLoader, "templates")
         val template = cfg.getTemplate(templateName)
         val data = HashMap<String, Any>()
-        data["resourceName"] = resourceName.capitalize()
+
+        data["resourceName"] = resourceName
+        data["resourceNamePlural"] = resourceName.pluralize()
+        data["resourceNameUppercase"] = resourceName.capitalize()
+
         data["packageName"] = packageName
         val writer = StringWriter()
         template.process(data, writer)
@@ -73,7 +77,7 @@ class FileCreator {
     private fun resolveFileName(
         resourceName: String,
         templateName: String
-    ) = "${resourceName.capitalize()}$templateName.kt"
+    ) = "${resourceName}$templateName.kt"
 
 }
 

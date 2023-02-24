@@ -6,19 +6,19 @@ import org.springframework.web.bind.annotation.RestController
 import java.time.Instant
 
 @RestController
-@RequestMapping("/${resourceName}s")
-class ${resourceName}Controller(service: ${resourceName}Service, mapper: ${resourceName}Mapper) :
-CRUDController<Long, ${resourceName}Entity, ${resourceName}, ${resourceName}DTO, Create${resourceName}, Update${resourceName}, Create${resourceName}DTO, Update${resourceName}DTO, ${resourceName}Mapper, ${resourceName}Mapper, ${resourceName}Service>(
-"${resourceName}",
+@RequestMapping("/${resourceNamePlural}")
+class ${resourceNameUppercase}Controller(service: ${resourceNameUppercase}Service, mapper: ${resourceNameUppercase}Mapper) :
+CRUDController<Long, ${resourceNameUppercase}Entity, ${resourceNameUppercase}, ${resourceNameUppercase}DTO, Create${resourceNameUppercase}, Update${resourceNameUppercase}, Create${resourceNameUppercase}DTO, Update${resourceNameUppercase}DTO, ${resourceNameUppercase}Mapper, ${resourceNameUppercase}Mapper, ${resourceNameUppercase}Service>(
+"${resourceNameUppercase}",
 service,
 mapper
 )
 
-data class Create${resourceName}DTO(val name: String) : CRUDCreateDTO
+data class Create${resourceNameUppercase}DTO(val name: String) : CRUDCreateDTO
 
-data class Update${resourceName}DTO(val name: String) : CRUDUpdateDTO
+data class Update${resourceNameUppercase}DTO(val name: String) : CRUDUpdateDTO
 
-data class ${resourceName}DTO(
+data class ${resourceNameUppercase}DTO(
 val id: Long,
 val name: String,
 val createdAt: Instant,
