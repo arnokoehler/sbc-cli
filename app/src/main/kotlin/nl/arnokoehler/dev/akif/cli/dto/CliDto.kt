@@ -3,7 +3,7 @@ package nl.arnokoehler.dev.akif.cli.dto
 class CliDto {
     val dtos: MutableList<DtoEntry> = mutableListOf()
 
-    fun askUser() {
+    fun askUser(): List<DtoEntry> {
         println("Do you want to generate your DTOs now?")
 
         loop@ while (true) {
@@ -19,6 +19,8 @@ class CliDto {
 
         // Print all the dtos
         dtos.forEach { println(it)}
+
+        return dtos
     }
 
     fun createResource() {
