@@ -3,7 +3,7 @@ package nl.arnokoehler.dev.akif.cli
 import com.beust.jcommander.JCommander
 import com.beust.jcommander.Parameter
 
-class CliRunner() {
+class CliRunner {
 
     @Parameter(
         names = ["-resourceName"],
