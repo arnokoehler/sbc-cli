@@ -27,6 +27,7 @@ class InputValidator() {
             resourceName = ResourceNameInputHandler().handleInput(rawInput.resourceName),
             packageName = PackageNameInputHandler().handleInput(rawInput.packageName),
             variantStyle = VariantStyleInputHandler().handleInput(rawInput.variantStyle),
+            // idType =
             targetDir = rawInput.targetDir ?: throw IllegalArgumentException("Target directory cannot be empty")
         )
 
