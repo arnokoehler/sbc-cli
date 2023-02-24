@@ -19,7 +19,12 @@ class Menu(private val rawInput: RawInput, private val fileCreator: FileCreator)
     }
 
     private fun createResource() {
-        val validatedInput = InputValidator().handleInput(rawInput)
+        val validatedInput : ApplicationParameters = if (rawInput.initializrZip != null) {
+            SpringInitializr().handleInput(rawInput)
+        } else {
+            InputValidator().handleInput(rawInput)
+        }
+
         fileCreator.writeFile(validatedInput)
     }
 

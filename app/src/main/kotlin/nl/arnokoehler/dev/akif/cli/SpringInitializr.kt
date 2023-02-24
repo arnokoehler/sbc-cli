@@ -7,18 +7,21 @@ import java.io.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 
-class SpringInitializr(
-    zipPath: String,
-    private val targetDir: String
-) {
+class SpringInitializr() {
 
-    internal lateinit var languageVariant: LanguageVariant
-    var packageName: String? = null
-    var mainPath: String? = null
-    init {
+    fun handleInput(rawInput: RawInput): ApplicationParameters {
+        val targetDir = rawInput.targetDir ?: throw IllegalArgumentException("Target directory cannot be empty")
+        var languageVariant: LanguageVariant? = null
+        var packageName: String? = null
+        var mainPath: String? = null
 
         try {
-            ZipInputStream(FileInputStream(zipPath))
+            ZipInputStream(
+                FileInputStream(
+                    rawInput.initializrZip
+                        ?: throw IllegalStateException("Only invoke SpringInitializr input handler when `initializrZip` is set")
+                )
+            )
                 .use { zis ->
                     var ze: ZipEntry?
                     while (zis.nextEntry.also { ze = it } != null) {
@@ -59,8 +62,26 @@ class SpringInitializr(
                     }
                 }
         } catch (e: IOException) {
-            println(String.format("Unable to read from %s: %s", zipPath, ExceptionUtils.getRootCause(e)))
+            println(String.format("Unable to read from %s: %s", rawInput.initializrZip, ExceptionUtils.getRootCause(e)))
         }
+
+        return ApplicationParameters(
+            languageVariant = languageVariant!!,
+            resourceName = ResourceNameInputHandler().handleInput(rawInput.resourceName),
+            packageName = SubPackageNameInputHandler(packageName ?: throw java.lang.IllegalStateException("Could not extract base package from zip")).handleInput(rawInput.packageName),
+            variantStyle = VariantStyleInputHandler().handleInput(rawInput.variantStyle),
+            targetDir = rawInput.targetDir ?: throw IllegalArgumentException("Target directory cannot be empty")
+        )
     }
 
+}
+
+class SubPackageNameInputHandler(val defaultValue: String) : InputHandler<String>() {
+
+    override fun handleInput(input: String?): String {
+        println("Please provide a subpackage name (after $defaultValue)")
+        val packageName = readlnOrNull() ?: ""
+        println("Full package name set to: $defaultValue.$packageName")
+        return "$defaultValue.$packageName"
+    }
 }
