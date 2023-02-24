@@ -2,7 +2,7 @@ package nl.arnokoehler.dev.akif.cli
 
 import kotlin.system.exitProcess
 
-class Menu(val applicationParameters: RawInput, val fileCreator: FileCreator) {
+class Menu(private val rawInput: RawInput, private val fileCreator: FileCreator) {
 
     fun execute() {
         while (true) {
@@ -19,8 +19,7 @@ class Menu(val applicationParameters: RawInput, val fileCreator: FileCreator) {
     }
 
     private fun createResource() {
-        val validatedInput = InputValidator().handleInput(applicationParameters)
-
+        val validatedInput = InputValidator().handleInput(rawInput)
         fileCreator.writeFile(validatedInput)
     }
 

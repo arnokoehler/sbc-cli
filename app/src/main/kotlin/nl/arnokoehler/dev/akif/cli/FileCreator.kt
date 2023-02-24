@@ -12,12 +12,13 @@ class FileCreator {
     fun writeFile(applicationParameters: ApplicationParameters) {
         val resolvedTemplates = templateResolver.resolveTemplates(applicationParameters.languageVariant)
 
-        val (sourceFolder, isFolderCreatedSuccessfully: Boolean) = createFolders(
+        val (sourceFolder, folderAlreadyExists: Boolean) = createFolders(
             applicationParameters.packageName,
             applicationParameters.targetDir
         )
 
-        if (checkIfCanBeOverwritten(isFolderCreatedSuccessfully)) {
+        if (checkIfCanBeOverwritten(folderAlreadyExists)) {
+            println("Aborting")
             return
         }
 

@@ -3,7 +3,7 @@ package nl.arnokoehler.dev.akif.cli
 import com.beust.jcommander.JCommander
 import com.beust.jcommander.Parameter
 
-class CliRunner() {
+class CliRunner {
 
     @Parameter(
         names = ["-resourceName"],
@@ -34,17 +34,18 @@ class CliRunner() {
         names = ["-targetDir"],
         description = "The name of the resource to generate"
     )
-    private var targetDir: String =
-        "/Users/arnokoehler/Documents/Intellij/iodigital-com/sbc-cli/build/generated-sources/kotlin/main"
+    private var targetDir: String = ""
 
     fun run() {
-        Menu(RawInput(
-            languageVariant = languageVariant,
-            variantStyle = variantStyle,
-            resourceName = resourceName,
-            packageName = packageName,
-            targetDir = targetDir
-        ), FileCreator()).execute()
+        Menu(
+            RawInput(
+                languageVariant = languageVariant,
+                variantStyle = variantStyle,
+                resourceName = resourceName,
+                packageName = packageName,
+                targetDir = targetDir
+            ), FileCreator()
+        ).execute()
     }
 }
 

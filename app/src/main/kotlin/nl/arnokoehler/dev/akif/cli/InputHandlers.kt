@@ -1,11 +1,11 @@
 package nl.arnokoehler.dev.akif.cli
 
 data class RawInput(
-    var languageVariant: LanguageVariant?,
-    var variantStyle: StyleVariant?,
-    var resourceName: String?,
-    var packageName: String?,
-    var targetDir: String?
+    val languageVariant: LanguageVariant?,
+    val variantStyle: StyleVariant?,
+    val resourceName: String?,
+    val packageName: String?,
+    val targetDir: String?
 )
 
 data class ApplicationParameters(
@@ -39,6 +39,9 @@ abstract class InputHandler<T> {
 
 class ResourceNameInputHandler : InputHandler<String>() {
     override fun handleInput(input: String?): String {
+        if (input != null) {
+            return input
+        }
         println("Please provide a resource name")
         val resourceName = readlnOrNull() ?: throw IllegalArgumentException("Resource name cannot be empty")
         println("resource name set to: $resourceName")
@@ -48,6 +51,9 @@ class ResourceNameInputHandler : InputHandler<String>() {
 
 class PackageNameInputHandler : InputHandler<String>() {
     override fun handleInput(input: String?): String {
+        if (input != null) {
+            return input
+        }
         println("Please provide a package name")
         val packageName = readlnOrNull() ?: throw IllegalArgumentException("Package name cannot be empty")
         println("package name set to: $packageName")
@@ -57,6 +63,9 @@ class PackageNameInputHandler : InputHandler<String>() {
 
 class LanguageVariantInputHandler : InputHandler<LanguageVariant>() {
     override fun handleInput(input: LanguageVariant?): LanguageVariant {
+        if (input != null) {
+            return input
+        }
         println("Please provide a language variant: kotlin or java")
         for (value in LanguageVariant.values()) {
             println("${value.ordinal + 1} ${value.name}")
@@ -69,8 +78,11 @@ class LanguageVariantInputHandler : InputHandler<LanguageVariant>() {
 
 class VariantStyleInputHandler : InputHandler<StyleVariant>() {
     override fun handleInput(input: StyleVariant?): StyleVariant {
+        if (input != null) {
+            return input
+        }
         println("Please provide a variant style: crud or rest")
-        for (value in LanguageVariant.values()) {
+        for (value in StyleVariant.values()) {
             println("${value.ordinal + 1} ${value.name}")
         }
         val variantStyle = StyleVariantConverter().convert(readlnOrNull() ?: "crud")
@@ -86,6 +98,8 @@ fun String.convertToPackageWithResourceName(resourceName: String): String = when
 
 fun String.pluralize() = if (this.endsWith("s")) {
     ".${this}"
+} else if(this.endsWith("y")) {
+    ".${this.substring(0, this.length - 1)}ies"
 } else {
     ".${this}s"
 }
