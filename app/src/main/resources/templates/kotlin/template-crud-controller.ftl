@@ -29,4 +29,4 @@ val updatedAt: Instant
   override fun id(): Long = id
   override fun createdAt(): Instant = createdAt
   override fun updatedAt(): Instant = updatedAt
-  }
+}

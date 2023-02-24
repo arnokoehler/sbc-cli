@@ -28,7 +28,7 @@ updatedAt = null,
 deletedAt = null
 )
 
-override fun toString(): String {
-return "${resourceName}Entity(id=$id, ${toStringEntityFelds} version=$version, createdAt=$createdAt, updatedAt=$updatedAt, deletedAt=$deletedAt)"
-}
+    override fun toString(): String {
+        return "${resourceName}Entity(id=$id, ${entityFields}, version=$version, createdAt=$createdAt, updatedAt=$updatedAt, deletedAt=$deletedAt)"
+    }
 }

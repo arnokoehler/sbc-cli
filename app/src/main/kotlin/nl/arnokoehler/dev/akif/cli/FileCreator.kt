@@ -7,7 +7,6 @@ import java.io.StringWriter
 
 
 class FileCreator {
-
     private val templateResolver = TemplateResolver()
 
     fun writeFile(applicationParameters: ApplicationParameters, dataTransferObjects: MutableList<CliDto.DtoEntry>) {
@@ -27,15 +26,22 @@ class FileCreator {
             val template = processTemplate(
                 resolvedTemplate.value,
                 applicationParameters.resourceName,
-                applicationParameters.packageName
+                applicationParameters.packageName,
+                dataTransferObjects
             )
 
-            println("Writing file: ${resolvedTemplate.key}.kt")
-            File("$sourceFolder/${resolvedTemplate.key}.kt").writeBytes(template.toString().toByteArray())
+            val path = "/Users/JT99MB/dev/tmp"
+            println("Writing file: $path/${resolvedTemplate.key}.kt")
+            File("$path/${resolvedTemplate.key}.kt").writeBytes(template.toString().toByteArray())
         }
     }
 
-    private fun processTemplate(templateName: String, resourceName: String, packageName: String): StringWriter {
+    private fun processTemplate(
+        templateName: String,
+        resourceName: String,
+        packageName: String,
+        dataTransferObjects: MutableList<CliDto.DtoEntry>
+    ): StringWriter {
         val cfg = Configuration(Configuration.VERSION_2_3_28)
         cfg.defaultEncoding = "UTF-8"
         cfg.templateLoader = freemarker.cache.ClassTemplateLoader(CliRunner::class.java.classLoader, "templates")
@@ -43,6 +49,8 @@ class FileCreator {
         val data = HashMap<String, Any>()
         data["resourceName"] = resourceName
         data["packageName"] = packageName
+        data["dtoFields"] = createDtoFieldsString(dataTransferObjects)
+        data["entityFields"] = createDtoFieldsString(dataTransferObjects)
         val writer = StringWriter()
         template.process(data, writer)
         return writer
@@ -68,5 +76,13 @@ class FileCreator {
         return Pair(sourceFolder, resultMkdir)
     }
 
-
+    private fun createDtoFieldsString(dtos: List<CliDto.DtoEntry>): String {
+        val sb = StringBuilder()
+        dtos.forEach {
+            it.fieldEntries.forEach {
+                sb.append("val ${it.varName}: ${it.typeName},${System.lineSeparator()}")
+            }
+        }
+        return sb.toString()
+    }
 }
