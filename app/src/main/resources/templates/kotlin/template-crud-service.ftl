@@ -1,58 +1,31 @@
 package ${packageName}
 
 import dev.akif.crud.*
+import dev.akif.crud.common.InstantProvider
 import org.springframework.stereotype.Service
-import java.time.Clock
 import java.time.Instant
 
 @Service
-class ${resourceName}Service(typeName: String, clock: Clock, repository: CRUDRepository<Long, ${resourceName}Entity>, mapper: ${resourceName}Mapper) :
-CRUDService<Long, ${resourceName}Entity, ${resourceName}Model, ${resourceName}CreateModel, ${resourceName}UpdateModel, ${resourceName}Mapper>(typeName, clock, repository, mapper) {
+class ${resourceName}Service(
+instantProvider: InstantProvider,
+repository: CRUDRepository<Long, ${resourceName}Entity>,
+mapper: ${resourceName}Mapper
+) : CRUDService<Long, ${resourceName}Entity, ${resourceName}, Create${resourceName}, Update${resourceName}, ${resourceName}Mapper>("${resourceName}", instantProvider, repository, mapper)
 
-}
+data class Create${resourceName}(val name: String) : CRUDCreateModel
 
-@Service
-class ${resourceName}Mapper : CRUDMapper<Long, ${resourceName}Entity, ${resourceName}Model, ${resourceName}CreateModel, ${resourceName}UpdateModel> {
+data class Update${resourceName}(val name: String) : CRUDUpdateModel
 
-override fun entityToBeCreatedFrom(createModel: ${resourceName}CreateModel, now: Instant): ${resourceName}Entity {
-TODO("Not yet implemented")
-}
-
-override fun entityToModel(entity: ${resourceName}Entity): ${resourceName}Model {
-TODO("Not yet implemented")
-}
-
-override fun updateEntityWith(updateModel: ${resourceName}UpdateModel, entity: ${resourceName}Entity) {
-TODO("Not yet implemented")
-}
-}
-
-data class ${resourceName}Model(
-val id: Long, val version: Int, val createdAt: Instant, val updatedAt: Instant, val deletedAt: Instant?
+data class ${resourceName}(
+val id: Long,
+val version: Int,
+val createdAt: Instant,
+val updatedAt: Instant,
+val deletedAt: Instant?
 ) : CRUDModel<Long> {
-
-    override fun createdAt(): Instant {
-    return createdAt
+    override fun id(): Long = id
+    override fun version(): Int = version
+    override fun createdAt(): Instant = createdAt
+    override fun updatedAt(): Instant = updatedAt
+    override fun deletedAt(): Instant? = deletedAt
     }
-
-    override fun deletedAt(): Instant? {
-    return deletedAt
-    }
-
-    override fun id(): Long {
-    return id
-    }
-
-    override fun updatedAt(): Instant {
-    return updatedAt
-    }
-
-    override fun version(): Int {
-    return version
-    }
-
-}
-
-data class ${resourceName}CreateModel(val ${resourceName}Name: String) : CRUDCreateModel
-
-data class ${resourceName}UpdateModel(val ${resourceName}Name: String) : CRUDUpdateModel

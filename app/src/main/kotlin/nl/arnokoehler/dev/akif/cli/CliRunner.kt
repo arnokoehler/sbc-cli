@@ -15,7 +15,7 @@ class CliRunner() {
         names = ["-variantStyle"],
         description = "The name of the resource to generate"
     )
-    private var variantStyle: String? = null
+    private var variantStyle: StyleVariant? = null
 
     @Parameter(
         names = ["-languageVariant"],
@@ -34,16 +34,17 @@ class CliRunner() {
         names = ["-targetDir"],
         description = "The name of the resource to generate"
     )
-    private var targetDir: String = "/Users/arnokoehler/Documents/Intellij/iodigital-com/sbc-cli/build/generated-sources/kotlin/main"
+    private var targetDir: String =
+        "/Users/arnokoehler/Documents/Intellij/iodigital-com/sbc-cli/build/generated-sources/kotlin/main"
 
     fun run() {
-        CommanLineInterfaceApplication(
+        Menu(RawInput(
             languageVariant = languageVariant,
             variantStyle = variantStyle,
             resourceName = resourceName,
             packageName = packageName,
             targetDir = targetDir
-        ).menuOptions()
+        ), FileCreator()).execute()
     }
 }
 
@@ -55,5 +56,4 @@ fun main(args: Array<String>) {
         .parse(*args)
     cliRunner.run()
 }
-
 

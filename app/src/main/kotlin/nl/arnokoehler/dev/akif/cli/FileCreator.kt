@@ -9,26 +9,24 @@ class FileCreator {
 
     private val templateResolver = TemplateResolver()
 
-    fun writeFile(
-        resourceName: String,
-        packageName: String,
-        languageVariant: LanguageVariant?,
-        variantStyle: String?,
-        targetDir: String
-    ) {
-        val resolvedTemplates = templateResolver.resolveTemplates(languageVariant)
+    fun writeFile(applicationParameters: ApplicationParameters) {
+        val resolvedTemplates = templateResolver.resolveTemplates(applicationParameters.languageVariant)
 
-        val (sourceFolder, resultMkdir: Boolean) = pair(
-            packageName,
-            targetDir
+        val (sourceFolder, isFolderCreatedSuccessfully: Boolean) = createFolders(
+            applicationParameters.packageName,
+            applicationParameters.targetDir
         )
 
-        if (checkIfCanBeOverwritten(resultMkdir)) {
+        if (checkIfCanBeOverwritten(isFolderCreatedSuccessfully)) {
             return
         }
 
         for (resolvedTemplate in resolvedTemplates) {
-            val template = processTemplate(resolvedTemplate.value, resourceName, packageName)
+            val template = processTemplate(
+                resolvedTemplate.value,
+                applicationParameters.resourceName,
+                applicationParameters.packageName
+            )
 
             println("Writing file: ${resolvedTemplate.key}.kt")
             File("$sourceFolder/${resolvedTemplate.key}.kt").writeBytes(template.toString().toByteArray())
@@ -48,8 +46,8 @@ class FileCreator {
         return writer
     }
 
-    private fun checkIfCanBeOverwritten(resultMkdir: Boolean): Boolean {
-        if (!resultMkdir) {
+    private fun checkIfCanBeOverwritten(isFolderCreatedSuccessfully: Boolean): Boolean {
+        if (!isFolderCreatedSuccessfully) {
             println("Folder structure already exists, contents will be overwritten")
             println("Do you want to continue? (y/n)")
             val answer = readlnOrNull() ?: "n"
@@ -61,7 +59,7 @@ class FileCreator {
         return false
     }
 
-    private fun pair(packageName: String, targetDir: String): Pair<String, Boolean> {
+    private fun createFolders(packageName: String, targetDir: String): Pair<String, Boolean> {
         println("Creating folder structure: $packageName")
         val sourceFolder = "$targetDir/$packageName"
         val resultMkdir: Boolean = File(sourceFolder).mkdirs()
