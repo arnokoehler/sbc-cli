@@ -7,7 +7,7 @@ import java.io.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 
-class SpringInitializr() {
+class SpringInitializr {
 
     fun handleInput(rawInput: RawInput): ApplicationParameters {
         val targetDir = rawInput.targetDir ?: throw IllegalArgumentException("Target directory cannot be empty")
@@ -38,7 +38,7 @@ class SpringInitializr() {
                             if (file.parentFile.endsWith("main")) {
                                 try {
                                     languageVariant = LanguageConverter().convert(fileName)
-                                    mainPath = filePath;
+                                    mainPath = filePath
                                     println("Detected language: $languageVariant")
                                 } catch (_: IllegalArgumentException) {
                                 }
@@ -70,7 +70,7 @@ class SpringInitializr() {
             resourceName = ResourceNameInputHandler().handleInput(rawInput.resourceName),
             packageName = SubPackageNameInputHandler(packageName ?: throw java.lang.IllegalStateException("Could not extract base package from zip")).handleInput(rawInput.packageName),
             variantStyle = VariantStyleInputHandler().handleInput(rawInput.variantStyle),
-            targetDir = rawInput.targetDir ?: throw IllegalArgumentException("Target directory cannot be empty")
+            targetDir = "$targetDir/$mainPath"
         )
     }
 
