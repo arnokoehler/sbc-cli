@@ -28,8 +28,7 @@ class FileCreator {
         for (resolvedTemplate in resolvedTemplates) {
             val template = processTemplate(
                 resolvedTemplate.value,
-                applicationParameters.resourceName,
-                applicationParameters.packageName
+                applicationParameters
             )
 
             val filename = resolveFileName(applicationParameters.resourceName, resolvedTemplate.key)
@@ -38,18 +37,19 @@ class FileCreator {
         }
     }
 
-    private fun processTemplate(templateName: String, resourceName: String, packageName: String): StringWriter {
+    private fun processTemplate(templateName: String, applicationParameters: ApplicationParameters): StringWriter {
         val cfg = Configuration(Configuration.VERSION_2_3_28)
         cfg.defaultEncoding = "UTF-8"
         cfg.templateLoader = freemarker.cache.ClassTemplateLoader(CliRunner::class.java.classLoader, "templates")
         val template = cfg.getTemplate(templateName)
         val data = HashMap<String, Any>()
 
-        data["resourceName"] = resourceName
-        data["resourceNamePlural"] = resourceName.pluralize()
-        data["resourceNameUppercase"] = resourceName.capitalize()
+        data["resourceName"] = applicationParameters.resourceName
+        data["resourceNamePlural"] = applicationParameters.resourceName.pluralize()
+        data["resourceNameUppercase"] = applicationParameters.resourceName.capitalize()
+        data["idType"] = applicationParameters.idType
+        data["packageName"] = applicationParameters.packageName
 
-        data["packageName"] = packageName
         val writer = StringWriter()
         template.process(data, writer)
         return writer

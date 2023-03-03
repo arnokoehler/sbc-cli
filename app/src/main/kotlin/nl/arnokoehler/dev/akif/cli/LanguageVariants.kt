@@ -16,10 +16,10 @@ class LanguageConverter : IStringConverter<LanguageVariant> {
         }
     }
 
-    private fun resolveOptions(value: String) = when (value) {
-        "1" -> LanguageVariant.values()[0]
-        "2" -> LanguageVariant.values()[1]
-        else -> throw IllegalArgumentException("Please provide a valid language variant")
+    private fun resolveOptions(value: String): LanguageVariant {
+        return LanguageVariant.values()
+            .getOrNull((value.toIntOrNull() ?: 0) - 1)
+            ?: throw IllegalArgumentException("Please provide a valid language variant")
     }
 
 }

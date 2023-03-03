@@ -62,12 +62,13 @@ class SpringInitializr {
                     }
                 }
         } catch (e: IOException) {
-            println(String.format("Unable to read from %s: %s", rawInput.initializrZip, ExceptionUtils.getRootCause(e)))
+            println("Unable to read from ${rawInput.initializrZip}: ${ExceptionUtils.getRootCause(e)}")
         }
 
         return ApplicationParameters(
             languageVariant = languageVariant!!,
             resourceName = ResourceNameInputHandler().handleInput(rawInput.resourceName),
+            idType = ResourceIdTypeInputHandler().handleInput(rawInput.idType),
             packageName = SubPackageNameInputHandler(packageName ?: throw java.lang.IllegalStateException("Could not extract base package from zip")).handleInput(rawInput.packageName),
             variantStyle = VariantStyleInputHandler().handleInput(rawInput.variantStyle),
             targetDir = "$targetDir/$mainPath"

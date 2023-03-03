@@ -27,7 +27,7 @@ class InputValidator() {
             resourceName = ResourceNameInputHandler().handleInput(rawInput.resourceName),
             packageName = PackageNameInputHandler().handleInput(rawInput.packageName),
             variantStyle = VariantStyleInputHandler().handleInput(rawInput.variantStyle),
-            // idType =
+            idType = ResourceIdTypeInputHandler().handleInput(rawInput.idType),
             targetDir = rawInput.targetDir ?: throw IllegalArgumentException("Target directory cannot be empty")
         )
 
@@ -113,15 +113,15 @@ class ResourceIdTypeInputHandler : InputHandler<ResourceIdType>() {
 
 fun String.convertToPackageWithResourceName(resourceName: String): String = when {
     this.contains(resourceName, ignoreCase = true) -> this
-    else -> this + resourceName.pluralize()
+    else -> "$this.${resourceName.pluralize().lowercase()}"
 }
 
 fun String.pluralize() = if (this.endsWith("s")) {
-    ".${this}"
+    this
 } else if(this.endsWith("y")) {
-    ".${this.substring(0, this.length - 1)}ies"
+    "${this.substring(0, this.length - 1)}ies"
 } else {
-    ".${this}s"
+    "${this}s"
 }
 
 
