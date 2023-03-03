@@ -12,12 +12,13 @@ repository: CRUDRepository<Long, ${resourceNameUppercase}Entity>,
 mapper: ${resourceNameUppercase}Mapper
 ) : CRUDService<Long, ${resourceNameUppercase}Entity, ${resourceNameUppercase}, Create${resourceNameUppercase}, Update${resourceNameUppercase}, ${resourceNameUppercase}Mapper>("${resourceNameUppercase}", instantProvider, repository, mapper)
 
-data class Create${resourceNameUppercase}(val name: String) : CRUDCreateModel
+data class Create${resourceNameUppercase}(${dtoFields}) : CRUDCreateModel
 
-data class Update${resourceNameUppercase}(val name: String) : CRUDUpdateModel
+data class Update${resourceNameUppercase}(${dtoFields}) : CRUDUpdateModel
 
 data class ${resourceNameUppercase}(
 val id: Long,
+${dtoFields}
 val version: Int,
 val createdAt: Instant,
 val updatedAt: Instant,
