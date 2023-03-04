@@ -101,7 +101,7 @@ class ResourceIdTypeInputHandler : InputHandler<ResourceIdType>() {
             return input
         }
         println("Please provide a type for the primary ID")
-        for (value in StyleVariant.values()) {
+        for (value in ResourceIdType.values()) {
             println("${value.ordinal + 1} ${value.name}")
         }
         val resourceIdType = ResourceIdTypeConverter().convert(readlnOrNull() ?: "long")
