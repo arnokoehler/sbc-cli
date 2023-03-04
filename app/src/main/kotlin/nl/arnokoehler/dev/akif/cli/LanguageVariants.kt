@@ -24,3 +24,20 @@ class LanguageConverter : IStringConverter<LanguageVariant> {
 
 }
 
+class LanguageVariantInputHandler : InputHandler<LanguageVariant>() {
+    override fun handleInput(input: LanguageVariant?): LanguageVariant {
+        if (input != null) {
+            return input
+        }
+        println("Please provide a language variant: kotlin or java")
+        for (value in LanguageVariant.values()) {
+            println("${value.ordinal + 1} ${value.name}")
+        }
+        val languageVariant = LanguageConverter().convert(readlnOrNull() ?: "kotlin")
+        println("language set to: $languageVariant")
+        return languageVariant
+    }
+}
+
+
+

@@ -3,32 +3,49 @@ package nl.arnokoehler.dev.akif.cli
 import nl.arnokoehler.dev.akif.cli.dto.CliDto
 import kotlin.system.exitProcess
 
-class Menu(private val rawInput: RawInput, private val fileCreator: FileCreator) {
+class Menu(private val firstInput: RawInput, private val fileCreator: FileCreator) {
+
+    private var currentState: CliState = CliState.InitialUnchecked(firstInput)
 
     fun execute() {
-        while (true) {
-            println("Please select an option:")
-            println("1. Create resource")
-            println("2. Exit")
-
-            when (readlnOrNull() ?: "2") {
-                "1" -> createResource()
-                "2" -> exitProcess(0)
-                else -> println("Please provide a valid option")
-            }
+        while (currentState !is CliState.Generated) {
+            if (handleState()) break
         }
+        exitProcess(0)
     }
 
-    private fun createResource() {
-        val validatedInput : ApplicationParameters = if (rawInput.initializrZip != null) {
+    private fun handleState(): Boolean {
+        when (currentState) {
+            is CliState.InitialUnchecked -> {
+                InitialScreen().render(currentState)
+                currentState = CliState.InitialChecked(firstInput)
+            }
+
+            is CliState.InitialChecked -> {
+                currentState = if (RawInputHandler().validate((currentState as CliState.InitialChecked).input)) {
+                    CliState.Validated(handleInput((currentState as CliState.InitialChecked).input), CliDto().askUser())
+                } else {
+                    CliState.Incomplete(firstInput)
+                }
+            }
+            is CliState.Incomplete -> {
+                currentState = CliState.Validated(handleInput((currentState as CliState.Incomplete).input), CliDto().askUser())
+            }
+            is CliState.Validated -> {
+                ValidatedScreen().render(currentState)
+                fileCreator.writeFile((currentState as CliState.Validated).validInput, (currentState as CliState.Validated).dtoEntries)
+            }
+            is CliState.Generated -> return true
+        }
+        return false
+    }
+
+    private fun handleInput(rawInput: RawInput): ApplicationParameters {
+        val validatedInput: ApplicationParameters = if (firstInput.initializrZip != null) {
             SpringInitializr().handleInput(rawInput)
         } else {
-            InputValidator().handleInput(rawInput)
+            RawInputHandler().handleInput(rawInput)
         }
-
-        val cliDto = CliDto()
-        cliDto.askUser()
-
-        fileCreator.writeFile(validatedInput, cliDto.dataTransferObjects)
+        return validatedInput
     }
 }
