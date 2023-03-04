@@ -2,9 +2,9 @@ package nl.arnokoehler.dev.akif.cli
 
 import com.beust.jcommander.IStringConverter
 
-enum class LanguageVariant {
-    KOTLIN,
-    JAVA
+enum class LanguageVariant(val extension: String) {
+    KOTLIN(".kt"),
+    JAVA(".java");
 }
 
 class LanguageConverter : IStringConverter<LanguageVariant> {

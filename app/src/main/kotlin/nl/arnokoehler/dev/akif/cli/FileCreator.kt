@@ -35,7 +35,7 @@ class FileCreator {
                 dataTransferObjects
             )
 
-            val filename = resolveFileName(applicationParameters.resourceName, resolvedTemplate.key)
+            val filename = resolveFileName(applicationParameters.resourceName, resolvedTemplate.key, applicationParameters.languageVariant)
             template.toFile(sourceFolder, filename)
             println("Created file: $filename")
         }
@@ -95,15 +95,16 @@ class FileCreator {
 
     private fun resolveFileName(
         resourceName: String,
-        templateName: String
-    ) = "${resourceName}$templateName.kt"
+        templateName: String,
+        languageVariant: LanguageVariant
+    ) = "${resourceName}$templateName${languageVariant.extension}"
 
 
     fun String.capitalize() =
         this.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
 
     fun StringWriter.toFile(path: String, filename: String) {
-        File("${path}/${filename}.kt").writeBytes(this.toString().toByteArray())
+        File("${path}/${filename}").writeBytes(this.toString().toByteArray())
     }
 
     private fun createDtoFieldsString(dtos: List<CliDto.DtoEntry>): String {
