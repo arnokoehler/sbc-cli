@@ -1,6 +1,8 @@
 package nl.arnokoehler.dev.akif.cli
 
-import nl.arnokoehler.dev.akif.cli.dto.CliDto
+import nl.arnokoehler.dev.akif.cli.inputhandlers.dto.CliDto
+import nl.arnokoehler.dev.akif.cli.inputhandlers.ApplicationParameters
+import nl.arnokoehler.dev.akif.cli.inputhandlers.RawInput
 
 sealed class CliState {
     data class InitialUnchecked(val input: RawInput) : CliState()

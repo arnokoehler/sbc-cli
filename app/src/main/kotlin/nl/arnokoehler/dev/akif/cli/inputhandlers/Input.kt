@@ -1,4 +1,4 @@
-package nl.arnokoehler.dev.akif.cli
+package nl.arnokoehler.dev.akif.cli.inputhandlers
 
 data class RawInput(
     val languageVariant: LanguageVariant?,

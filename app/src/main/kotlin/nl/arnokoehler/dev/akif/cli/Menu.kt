@@ -1,6 +1,11 @@
 package nl.arnokoehler.dev.akif.cli
 
-import nl.arnokoehler.dev.akif.cli.dto.CliDto
+import nl.arnokoehler.dev.akif.cli.inputhandlers.dto.CliDto
+import nl.arnokoehler.dev.akif.cli.generators.FileCreator
+import nl.arnokoehler.dev.akif.cli.inputhandlers.ApplicationParameters
+import nl.arnokoehler.dev.akif.cli.inputhandlers.RawInput
+import nl.arnokoehler.dev.akif.cli.inputhandlers.RawInputHandler
+import nl.arnokoehler.dev.akif.cli.inputhandlers.zip.SpringInitializr
 import kotlin.system.exitProcess
 
 class Menu(private val firstInput: RawInput, private val fileCreator: FileCreator) {
