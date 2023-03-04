@@ -31,10 +31,11 @@ class FileCreator {
                 resolvedTemplate.value,
                 applicationParameters.resourceName,
                 applicationParameters.packageName,
+                applicationParameters.idType,
                 dataTransferObjects
             )
 
-            val filename = resolveFileName(applicationParameters.resourceName, resolvedTemplate.key)
+            val filename = resolveFileName(applicationParameters.resourceName, resolvedTemplate.key, applicationParameters.languageVariant)
             template.toFile(sourceFolder, filename)
             println("Created file: $filename")
         }
@@ -44,6 +45,7 @@ class FileCreator {
         templateName: String,
         resourceName: String,
         packageName: String,
+        idType: ResourceIdType,
         dataTransferObjects: MutableList<CliDto.DtoEntry>
     ): StringWriter {
         val cfg = Configuration(Configuration.VERSION_2_3_28)
@@ -55,6 +57,7 @@ class FileCreator {
         data["resourceName"] = resourceName
         data["resourceNamePlural"] = resourceName.pluralize()
         data["resourceNameUppercase"] = resourceName.capitalize()
+        data["idType"] = idType
 
         data["packageName"] = packageName
         data["dtoFields"] = createDtoFieldsString(dataTransferObjects)
@@ -92,15 +95,16 @@ class FileCreator {
 
     private fun resolveFileName(
         resourceName: String,
-        templateName: String
-    ) = "${resourceName}$templateName.kt"
+        templateName: String,
+        languageVariant: LanguageVariant
+    ) = "${resourceName}$templateName${languageVariant.extension}"
 
 
     fun String.capitalize() =
         this.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
 
     fun StringWriter.toFile(path: String, filename: String) {
-        File("${path}/${filename}.kt").writeBytes(this.toString().toByteArray())
+        File("${path}/${filename}").writeBytes(this.toString().toByteArray())
     }
 
     private fun createDtoFieldsString(dtos: List<CliDto.DtoEntry>): String {

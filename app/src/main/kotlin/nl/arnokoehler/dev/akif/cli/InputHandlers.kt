@@ -6,12 +6,14 @@ data class RawInput(
     val resourceName: String?,
     val packageName: String?,
     val initializrZip: String?,
+    val idType: ResourceIdType?,
     val targetDir: String?
 )
 
 data class ApplicationParameters(
     val languageVariant: LanguageVariant,
     val variantStyle: StyleVariant,
+    val idType: ResourceIdType,
     val resourceName: String,
     val packageName: String,
     val targetDir: String
@@ -25,6 +27,7 @@ class InputValidator() {
             resourceName = ResourceNameInputHandler().handleInput(rawInput.resourceName),
             packageName = PackageNameInputHandler().handleInput(rawInput.packageName),
             variantStyle = VariantStyleInputHandler().handleInput(rawInput.variantStyle),
+            idType = ResourceIdTypeInputHandler().handleInput(rawInput.idType),
             targetDir = rawInput.targetDir ?: throw IllegalArgumentException("Target directory cannot be empty")
         )
 
@@ -92,17 +95,33 @@ class VariantStyleInputHandler : InputHandler<StyleVariant>() {
     }
 }
 
+class ResourceIdTypeInputHandler : InputHandler<ResourceIdType>() {
+    override fun handleInput(input: ResourceIdType?): ResourceIdType {
+        if (input != null) {
+            return input
+        }
+        println("Please provide a type for the primary ID")
+        for (value in ResourceIdType.values()) {
+            println("${value.ordinal + 1} ${value.name}")
+        }
+        val resourceIdType = ResourceIdTypeConverter().convert(readlnOrNull() ?: "long")
+        println("variant style set to: $resourceIdType")
+        return resourceIdType
+    }
+}
+
+
 fun String.convertToPackageWithResourceName(resourceName: String): String = when {
     this.contains(resourceName, ignoreCase = true) -> this
-    else -> this + resourceName.pluralize()
+    else -> "$this.${resourceName.pluralize().lowercase()}"
 }
 
 fun String.pluralize() = if (this.endsWith("s")) {
-    ".${this}"
+    this
 } else if(this.endsWith("y")) {
-    ".${this.substring(0, this.length - 1)}ies"
+    "${this.substring(0, this.length - 1)}ies"
 } else {
-    ".${this}s"
+    "${this}s"
 }
 
 

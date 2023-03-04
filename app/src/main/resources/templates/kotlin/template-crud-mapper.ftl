@@ -4,10 +4,13 @@ import dev.akif.crud.CRUDDTOMapper
 import dev.akif.crud.CRUDMapper
 import org.springframework.stereotype.Component
 import java.time.Instant
+<#if idType["import"]?has_content>
+    import ${idType["import"]}
+</#if>
 
 @Component
-class ${resourceNameUppercase}Mapper: CRUDMapper<Long, ${resourceNameUppercase}Entity, ${resourceNameUppercase}, Create${resourceNameUppercase}, Update${resourceNameUppercase}>,
-CRUDDTOMapper<Long, ${resourceNameUppercase}, ${resourceNameUppercase}DTO, Create${resourceNameUppercase}, Update${resourceNameUppercase}, Create${resourceNameUppercase}DTO, Update${resourceNameUppercase}DTO> {
+class ${resourceNameUppercase}Mapper: CRUDMapper<${idType["type"]}, ${resourceNameUppercase}Entity, ${resourceNameUppercase}, Create${resourceNameUppercase}, Update${resourceNameUppercase}>,
+CRUDDTOMapper<${idType["type"]}, ${resourceNameUppercase}, ${resourceNameUppercase}DTO, Create${resourceNameUppercase}, Update${resourceNameUppercase}, Create${resourceNameUppercase}DTO, Update${resourceNameUppercase}DTO> {
 override fun entityToBeCreatedFrom(createModel: Create${resourceNameUppercase}, now: Instant): ${resourceNameUppercase}Entity =
 TODO("Not yet implemented")
 

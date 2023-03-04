@@ -14,7 +14,7 @@ class Menu(private val rawInput: RawInput, private val fileCreator: FileCreator)
             when (readlnOrNull() ?: "2") {
                 "1" -> createResource()
                 "2" -> exitProcess(0)
-                else -> println("Please select a valid option")
+                else -> println("Please provide a valid option")
             }
         }
     }

@@ -6,19 +6,22 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import org.springframework.stereotype.Repository
 import java.time.Instant
+<#if idType["import"]?has_content>
+    import ${idType["import"]}
+</#if>
 
 @Repository
-interface ${resourceNameUppercase}Repository : CRUDRepository<Long, ${resourceNameUppercase}Entity>
+interface ${resourceNameUppercase}Repository : CRUDRepository<${idType["type"]}, ${resourceNameUppercase}Entity>
 
 @Entity
 class ${resourceNameUppercase}Entity(
-@Id override var id: Long?,
+@Id override var id: ${idType["type"]}?,
 ${entityFields}
 override var version: Int?,
 override var createdAt: Instant?,
 override var updatedAt: Instant?,
 override var deletedAt: Instant?
-) : CRUDEntity<Long, ${resourceNameUppercase}Entity>(id, version, createdAt, updatedAt, deletedAt) {
+) : CRUDEntity<${idType["type"]}, ${resourceNameUppercase}Entity>(id, version, createdAt, updatedAt, deletedAt) {
 constructor() : this(
 id = null,
 name = null,

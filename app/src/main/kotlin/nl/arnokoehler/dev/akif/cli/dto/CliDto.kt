@@ -23,14 +23,14 @@ class CliDto {
         return dataTransferObjects
     }
 
-    fun createResource() {
+    private fun createResource() {
         // Create a new DTO
         //   ask for name of dto
         //       ask for field entry
         createDto().also { dataTransferObjects.add(it) }
     }
 
-    fun createDto(): DtoEntry {
+    private fun createDto(): DtoEntry {
         // Ask for name of DTO
         var dtoName: String
 
@@ -60,7 +60,7 @@ class CliDto {
             .also { it.fieldEntries.addAll(fields) }
     }
 
-    fun createField(): DtoFieldEntry {
+    private fun createField(): DtoFieldEntry {
         // Ask for name of field
         // Ask for type of field
 

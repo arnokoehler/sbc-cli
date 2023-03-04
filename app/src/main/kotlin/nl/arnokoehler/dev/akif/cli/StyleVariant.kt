@@ -18,12 +18,10 @@ class StyleVariantConverter : IStringConverter<StyleVariant> {
         }
     }
 
-    private fun resolveOptions(value: String) = when (value) {
-        "1" -> StyleVariant.values()[0]
-        "2" -> StyleVariant.values()[1]
-        "3" -> StyleVariant.values()[2]
-        "4" -> StyleVariant.values()[3]
-        else -> throw IllegalArgumentException("Please provide a valid style variant")
+    private fun resolveOptions(value: String): StyleVariant {
+        return StyleVariant.values()
+            .getOrNull((value.toIntOrNull() ?: 0) - 1)
+            ?: throw IllegalArgumentException("Please provide a valid language variant")
     }
 
 }
