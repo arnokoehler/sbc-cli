@@ -13,7 +13,7 @@ class FileCreator {
 
     private val templateResolver = TemplateResolver()
 
-    fun writeFile(applicationParameters: ApplicationParameters, dataTransferObjects: MutableList<CliDto.DtoEntry>) {
+    fun writeFile(applicationParameters: ApplicationParameters, dataTransferObjects: List<CliDto.DtoEntry>) {
         val resolvedTemplates = templateResolver.resolveTemplates(applicationParameters.languageVariant)
 
         val (sourceFolder, folderAlreadyExists: Boolean) = createFolders(
@@ -46,7 +46,7 @@ class FileCreator {
         resourceName: String,
         packageName: String,
         idType: ResourceIdType,
-        dataTransferObjects: MutableList<CliDto.DtoEntry>
+        dataTransferObjects: List<CliDto.DtoEntry>
     ): StringWriter {
         val cfg = Configuration(Configuration.VERSION_2_3_28)
         cfg.defaultEncoding = "UTF-8"
