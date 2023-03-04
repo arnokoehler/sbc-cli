@@ -26,3 +26,17 @@ class StyleVariantConverter : IStringConverter<StyleVariant> {
 
 }
 
+class VariantStyleInputHandler : InputHandler<StyleVariant>() {
+    override fun handleInput(input: StyleVariant?): StyleVariant {
+        if (input != null) {
+            return input
+        }
+        println("Please provide a variant style: crud or rest")
+        for (value in StyleVariant.values()) {
+            println("${value.ordinal + 1} ${value.name}")
+        }
+        val variantStyle = StyleVariantConverter().convert(readlnOrNull() ?: "crud")
+        println("variant style set to: $variantStyle")
+        return variantStyle
+    }
+}

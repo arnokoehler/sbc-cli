@@ -8,7 +8,19 @@ data class RawInput(
     val initializrZip: String?,
     val idType: ResourceIdType?,
     val targetDir: String?
-)
+) {
+    override fun toString(): String {
+        return """
+            languageVariant: $languageVariant
+            variantStyle: $variantStyle
+            resourceName: $resourceName
+            packageName: $packageName
+            initializrZip: $initializrZip
+            idType: $idType
+            targetDir: $targetDir
+        """.trimIndent()
+    }
+}
 
 data class ApplicationParameters(
     val languageVariant: LanguageVariant,
@@ -19,7 +31,18 @@ data class ApplicationParameters(
     val targetDir: String
 )
 
-class InputValidator() {
+class RawInputHandler {
+    fun validate(rawInput: RawInput): Boolean {
+        if (LanguageVariantInputHandler().validateInput(rawInput.languageVariant)
+            && VariantStyleInputHandler().validateInput(rawInput.variantStyle)
+            && ResourceIdTypeInputHandler().validateInput(rawInput.idType)
+            && ResourceNameInputHandler().validateInput(rawInput.resourceName)
+            && PackageNameInputHandler().validateInput(rawInput.packageName)
+        ) {
+            return true
+        }
+        return false
+    }
 
     fun handleInput(rawInput: RawInput): ApplicationParameters {
         val applicationParameters = ApplicationParameters(
@@ -39,7 +62,11 @@ class InputValidator() {
 
 abstract class InputHandler<T> {
     abstract fun handleInput(input: T?): T
+    fun validateInput(input: T?): Boolean {
+        return input != null
+    }
 }
+
 
 class ResourceNameInputHandler : InputHandler<String>() {
     override fun handleInput(input: String?): String {
@@ -65,52 +92,6 @@ class PackageNameInputHandler : InputHandler<String>() {
     }
 }
 
-class LanguageVariantInputHandler : InputHandler<LanguageVariant>() {
-    override fun handleInput(input: LanguageVariant?): LanguageVariant {
-        if (input != null) {
-            return input
-        }
-        println("Please provide a language variant: kotlin or java")
-        for (value in LanguageVariant.values()) {
-            println("${value.ordinal + 1} ${value.name}")
-        }
-        val languageVariant = LanguageConverter().convert(readlnOrNull() ?: "kotlin")
-        println("language set to: $languageVariant")
-        return languageVariant
-    }
-}
-
-class VariantStyleInputHandler : InputHandler<StyleVariant>() {
-    override fun handleInput(input: StyleVariant?): StyleVariant {
-        if (input != null) {
-            return input
-        }
-        println("Please provide a variant style: crud or rest")
-        for (value in StyleVariant.values()) {
-            println("${value.ordinal + 1} ${value.name}")
-        }
-        val variantStyle = StyleVariantConverter().convert(readlnOrNull() ?: "crud")
-        println("variant style set to: $variantStyle")
-        return variantStyle
-    }
-}
-
-class ResourceIdTypeInputHandler : InputHandler<ResourceIdType>() {
-    override fun handleInput(input: ResourceIdType?): ResourceIdType {
-        if (input != null) {
-            return input
-        }
-        println("Please provide a type for the primary ID")
-        for (value in ResourceIdType.values()) {
-            println("${value.ordinal + 1} ${value.name}")
-        }
-        val resourceIdType = ResourceIdTypeConverter().convert(readlnOrNull() ?: "long")
-        println("variant style set to: $resourceIdType")
-        return resourceIdType
-    }
-}
-
-
 fun String.convertToPackageWithResourceName(resourceName: String): String = when {
     this.contains(resourceName, ignoreCase = true) -> this
     else -> "$this.${resourceName.pluralize().lowercase()}"
@@ -118,7 +99,7 @@ fun String.convertToPackageWithResourceName(resourceName: String): String = when
 
 fun String.pluralize() = if (this.endsWith("s")) {
     this
-} else if(this.endsWith("y")) {
+} else if (this.endsWith("y")) {
     "${this.substring(0, this.length - 1)}ies"
 } else {
     "${this}s"
