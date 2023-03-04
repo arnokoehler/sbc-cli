@@ -10,47 +10,45 @@ sealed class CliState {
     data class Generated(val input: RawInput) : CliState()
 }
 
-interface Screen<T : CliState> {
-    fun render(cliState: CliState)
-}
-
 class InitialScreen : Screen<CliState.InitialUnchecked> {
-    override fun render(cliState: CliState) {
+    override fun render(cliState: CliState): Boolean {
         println("Welcome to the Spring-Boot-Crud CLI")
         println("You have provided the following parameters: ${(cliState as CliState.InitialUnchecked).input}")
-        println("Is this correct? (y/n)")
-        askForInput()
-    }
-
-    private fun askForInput(): Boolean =
-        readlnOrNull()?.let {
-            return when (it) {
-                "y" -> proceed()
-                "n" -> correct()
-                else -> handleError()
-            }
-        } ?: handleError()
-
-    private fun handleError(): Boolean {
-        println("Please provide a valid option")
-        return askForInput()
-    }
-
-    private fun correct(): Boolean {
-        println("Please provide the correct parameters")
         return true
-    }
-
-    private fun proceed(): Boolean {
-        println("Great!")
-        return false
     }
 }
 
 class ValidatedScreen : Screen<CliState.Validated> {
-    override fun render(cliState: CliState) {
-        println("You have provided the following parameters: ${(cliState as CliState.InitialUnchecked).input}")
+    override fun render(cliState: CliState): Boolean {
+        println("You have provided the following parameters: ${(cliState as CliState.Validated).validInput}")
         println("Do you want to generate the project? (y/n)")
+        return askForInput()
     }
 }
 
+interface Screen<T : CliState> {
+    fun render(cliState: CliState): Boolean
+}
+
+fun askForInput(): Boolean =
+    readlnOrNull()?.let {
+        return when (it) {
+            "y" -> proceed()
+            "n" -> correct()
+            else -> handleError()
+        }
+    } ?: handleError()
+ fun handleError(): Boolean {
+    println("Please provide a valid option")
+    return askForInput()
+}
+
+fun correct(): Boolean {
+    println("Please provide the correct parameters")
+    return false
+}
+
+fun proceed(): Boolean {
+    println("Great!")
+    return true
+}

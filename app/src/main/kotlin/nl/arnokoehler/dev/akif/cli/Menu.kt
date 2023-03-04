@@ -17,8 +17,11 @@ class Menu(private val firstInput: RawInput, private val fileCreator: FileCreato
     private fun handleState(): Boolean {
         when (currentState) {
             is CliState.InitialUnchecked -> {
-                InitialScreen().render(currentState)
-                currentState = CliState.InitialChecked(firstInput)
+                if (InitialScreen().render(currentState)) {
+                    currentState = CliState.InitialChecked(firstInput)
+                } else {
+                    return false
+                }
             }
 
             is CliState.InitialChecked -> {
@@ -28,13 +31,24 @@ class Menu(private val firstInput: RawInput, private val fileCreator: FileCreato
                     CliState.Incomplete(firstInput)
                 }
             }
+
             is CliState.Incomplete -> {
-                currentState = CliState.Validated(handleInput((currentState as CliState.Incomplete).input), CliDto().askUser())
+                currentState =
+                    CliState.Validated(handleInput((currentState as CliState.Incomplete).input), CliDto().askUser())
             }
+
             is CliState.Validated -> {
-                ValidatedScreen().render(currentState)
-                fileCreator.writeFile((currentState as CliState.Validated).validInput, (currentState as CliState.Validated).dtoEntries)
+                if (ValidatedScreen().render(currentState)) {
+                    fileCreator.writeFile(
+                        (currentState as CliState.Validated).validInput,
+                        (currentState as CliState.Validated).dtoEntries
+                    )
+                    currentState = CliState.Generated(firstInput)
+                } else {
+                    currentState = CliState.Incomplete(firstInput)
+                }
             }
+
             is CliState.Generated -> return true
         }
         return false
