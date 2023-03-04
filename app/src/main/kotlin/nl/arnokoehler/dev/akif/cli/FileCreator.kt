@@ -2,6 +2,7 @@ package nl.arnokoehler.dev.akif.cli
 
 import freemarker.template.Configuration
 import org.apache.commons.lang3.StringUtils
+import nl.arnokoehler.dev.akif.cli.dto.CliDto
 import java.io.File
 import java.io.StringWriter
 import java.util.*
@@ -12,7 +13,7 @@ class FileCreator {
 
     private val templateResolver = TemplateResolver()
 
-    fun writeFile(applicationParameters: ApplicationParameters) {
+    fun writeFile(applicationParameters: ApplicationParameters, dataTransferObjects: MutableList<CliDto.DtoEntry>) {
         val resolvedTemplates = templateResolver.resolveTemplates(applicationParameters.languageVariant)
 
         val (sourceFolder, folderAlreadyExists: Boolean) = createFolders(
@@ -28,7 +29,10 @@ class FileCreator {
         for (resolvedTemplate in resolvedTemplates) {
             val template = processTemplate(
                 resolvedTemplate.value,
-                applicationParameters
+                applicationParameters.resourceName,
+                applicationParameters.packageName,
+                applicationParameters.idType,
+                dataTransferObjects
             )
 
             val filename = resolveFileName(applicationParameters.resourceName, resolvedTemplate.key)
@@ -37,19 +41,27 @@ class FileCreator {
         }
     }
 
-    private fun processTemplate(templateName: String, applicationParameters: ApplicationParameters): StringWriter {
+    private fun processTemplate(
+        templateName: String,
+        resourceName: String,
+        packageName: String,
+        idType: ResourceIdType,
+        dataTransferObjects: MutableList<CliDto.DtoEntry>
+    ): StringWriter {
         val cfg = Configuration(Configuration.VERSION_2_3_28)
         cfg.defaultEncoding = "UTF-8"
         cfg.templateLoader = freemarker.cache.ClassTemplateLoader(CliRunner::class.java.classLoader, "templates")
         val template = cfg.getTemplate(templateName)
         val data = HashMap<String, Any>()
 
-        data["resourceName"] = applicationParameters.resourceName
-        data["resourceNamePlural"] = applicationParameters.resourceName.pluralize()
-        data["resourceNameUppercase"] = applicationParameters.resourceName.capitalize()
-        data["idType"] = applicationParameters.idType
-        data["packageName"] = applicationParameters.packageName
+        data["resourceName"] = resourceName
+        data["resourceNamePlural"] = resourceName.pluralize()
+        data["resourceNameUppercase"] = resourceName.capitalize()
+        data["idType"] = idType
 
+        data["packageName"] = packageName
+        data["dtoFields"] = createDtoFieldsString(dataTransferObjects)
+        data["entityFields"] = createDtoFieldsString(dataTransferObjects)
         val writer = StringWriter()
         template.process(data, writer)
         return writer
@@ -86,10 +98,21 @@ class FileCreator {
         templateName: String
     ) = "${resourceName}$templateName.kt"
 
-}
 
-fun String.capitalize() = this.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+    fun String.capitalize() =
+        this.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
 
-fun StringWriter.toFile(path: String, filename: String) {
-    File("${path}/${filename}.kt").writeBytes(this.toString().toByteArray())
+    fun StringWriter.toFile(path: String, filename: String) {
+        File("${path}/${filename}.kt").writeBytes(this.toString().toByteArray())
+    }
+
+    private fun createDtoFieldsString(dtos: List<CliDto.DtoEntry>): String {
+        val sb = StringBuilder()
+        dtos.forEach {
+            it.fieldEntries.forEach {
+                sb.append("val ${it.varName}: ${it.typeName},${System.lineSeparator()}")
+            }
+        }
+        return sb.toString()
+    }
 }

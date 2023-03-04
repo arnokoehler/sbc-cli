@@ -17,17 +17,19 @@ service,
 mapper
 )
 
-data class Create${resourceNameUppercase}DTO(val name: String) : CRUDCreateDTO
+data class Create${resourceNameUppercase}DTO(
+    ${dtoFields}
+) : CRUDCreateDTO
 
 data class Update${resourceNameUppercase}DTO(val name: String) : CRUDUpdateDTO
 
 data class ${resourceNameUppercase}DTO(
 val id: ${idType["type"]},
-val name: String,
+${dtoFields}
 val createdAt: Instant,
 val updatedAt: Instant
 ) : CRUDDTO<${idType["type"]}> {
   override fun id(): ${idType["type"]} = id
   override fun createdAt(): Instant = createdAt
   override fun updatedAt(): Instant = updatedAt
-  }
+}
