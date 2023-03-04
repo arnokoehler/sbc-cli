@@ -1,8 +1,13 @@
-package nl.arnokoehler.dev.akif.cli
+package nl.arnokoehler.dev.akif.cli.generators
 
 import freemarker.template.Configuration
+import nl.arnokoehler.dev.akif.cli.CliRunner
 import org.apache.commons.lang3.StringUtils
-import nl.arnokoehler.dev.akif.cli.dto.CliDto
+import nl.arnokoehler.dev.akif.cli.inputhandlers.dto.CliDto
+import nl.arnokoehler.dev.akif.cli.inputhandlers.ApplicationParameters
+import nl.arnokoehler.dev.akif.cli.inputhandlers.LanguageVariant
+import nl.arnokoehler.dev.akif.cli.inputhandlers.ResourceIdType
+import nl.arnokoehler.dev.akif.cli.inputhandlers.pluralize
 import java.io.File
 import java.io.StringWriter
 import java.util.*

@@ -1,4 +1,4 @@
-package nl.arnokoehler.dev.akif.cli.dto
+package nl.arnokoehler.dev.akif.cli.inputhandlers.dto
 
 class CliDto {
     val dataTransferObjects: MutableList<DtoEntry> = mutableListOf()

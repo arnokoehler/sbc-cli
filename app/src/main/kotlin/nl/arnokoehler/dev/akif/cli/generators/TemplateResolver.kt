@@ -1,4 +1,6 @@
-package nl.arnokoehler.dev.akif.cli
+package nl.arnokoehler.dev.akif.cli.generators
+
+import nl.arnokoehler.dev.akif.cli.inputhandlers.LanguageVariant
 
 class TemplateResolver {
 
