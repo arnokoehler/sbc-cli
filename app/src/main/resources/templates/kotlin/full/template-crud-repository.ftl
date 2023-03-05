@@ -2,7 +2,9 @@ package ${packageName}
 
 import dev.akif.crud.CRUDRepository
 import org.springframework.stereotype.Repository
-import java.util.UUID
+<#if idType["import"]?has_content>
+import ${idType["import"]}
+</#if>
 
 @Repository
-interface ${resourceNameUppercase}Repository : CRUDRepository<UUID, ${resourceNameUppercase}Entity>
+interface ${resourceNameUppercase}Repository : CRUDRepository<${idType["type"]}, ${resourceNameUppercase}Entity>

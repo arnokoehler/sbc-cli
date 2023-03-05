@@ -2,10 +2,12 @@ package ${packageName}
 
 import dev.akif.crud.CRUDDTOMapper
 import org.springframework.stereotype.Component
-import java.util.UUID
+<#if idType["import"]?has_content>
+import ${idType["import"]}
+</#if>
 
 @Component
-class ${resourceNameUppercase}DTOMapper : CRUDDTOMapper<UUID, ${resourceNameUppercase}, ${resourceNameUppercase}DTO, Create${resourceNameUppercase}, Update${resourceNameUppercase}, Create${resourceNameUppercase}DTO, Update${resourceNameUppercase}DTO> {
+class ${resourceNameUppercase}DTOMapper : CRUDDTOMapper<${idType["type"]}, ${resourceNameUppercase}, ${resourceNameUppercase}DTO, Create${resourceNameUppercase}, Update${resourceNameUppercase}, Create${resourceNameUppercase}DTO, Update${resourceNameUppercase}DTO> {
     override fun createDTOToCreateModel(createDTO: Create${resourceNameUppercase}DTO): Create${resourceNameUppercase} =
         Create${resourceNameUppercase}(
             name = createDTO.name,

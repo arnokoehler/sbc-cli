@@ -19,7 +19,7 @@ class FileCreator {
     private val templateResolver = TemplateResolver()
 
     fun writeFile(applicationParameters: ApplicationParameters, dataTransferObjects: List<CliDto.DtoEntry>) {
-        val resolvedTemplates = templateResolver.resolveTemplates(applicationParameters.languageVariant)
+        val resolvedTemplates = templateResolver.resolveTemplates(applicationParameters.languageVariant, applicationParameters.styleVariant)
 
         val (sourceFolder, folderAlreadyExists: Boolean) = createFolders(
             applicationParameters.packageName,
@@ -105,17 +105,17 @@ class FileCreator {
     ) = "${resourceName}$templateName${languageVariant.extension}"
 
 
-    fun String.capitalize() =
+    private fun String.capitalize() =
         this.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
 
-    fun StringWriter.toFile(path: String, filename: String) {
+    private fun StringWriter.toFile(path: String, filename: String) {
         File("${path}/${filename}").writeBytes(this.toString().toByteArray())
     }
 
     private fun createDtoFieldsString(dtos: List<CliDto.DtoEntry>): String {
         val sb = StringBuilder()
-        dtos.forEach {
-            it.fieldEntries.forEach {
+        dtos.forEach { entry ->
+            entry.fieldEntries.forEach {
                 sb.append("val ${it.varName}: ${it.typeName},${System.lineSeparator()}")
             }
         }

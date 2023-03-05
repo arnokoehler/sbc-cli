@@ -3,13 +3,15 @@ package ${packageName}
 import dev.akif.crud.CRUDMapper
 import org.springframework.stereotype.Component
 import java.time.Instant
-import java.util.UUID
+<#if idType["import"]?has_content>
+import ${idType["import"]}
+</#if>
 
 @Component
-class ${resourceNameUppercase}Mapper : CRUDMapper<UUID, ${resourceNameUppercase}Entity, ${resourceNameUppercase}, Create${resourceNameUppercase}, Update${resourceNameUppercase}> {
+class ${resourceNameUppercase}Mapper : CRUDMapper<${idType["type"]}, ${resourceNameUppercase}Entity, ${resourceNameUppercase}, Create${resourceNameUppercase}, Update${resourceNameUppercase}> {
     override fun entityToBeCreatedFrom(createModel: Create${resourceNameUppercase}, now: Instant): ${resourceNameUppercase}Entity =
         ${resourceNameUppercase}Entity(
-            id = UUID.randomUUID(),
+            id = ${idType["type"]}.random${idType["type"]}(),
             name = createModel.name,
             breed = createModel.breed,
             age = createModel.age,

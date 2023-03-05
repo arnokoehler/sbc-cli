@@ -4,6 +4,7 @@ import com.beust.jcommander.IStringConverter
 
 enum class StyleVariant {
     FULL_CRUD,
+    FULL_CRUD_THREE_FILES,
     SIMPLER_CRUD,
     SIMPLE_CRUD,
     SIMPLIST_CRUD
