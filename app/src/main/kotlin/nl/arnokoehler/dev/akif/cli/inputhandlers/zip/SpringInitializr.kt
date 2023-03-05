@@ -71,7 +71,7 @@ class SpringInitializr {
             resourceName = ResourceNameInputHandler().handleInput(rawInput.resourceName),
             idType = ResourceIdTypeInputHandler().handleInput(rawInput.idType),
             packageName = SubPackageNameInputHandler(packageName ?: throw java.lang.IllegalStateException("Could not extract base package from zip")).handleInput(rawInput.packageName),
-            variantStyle = VariantStyleInputHandler().handleInput(rawInput.variantStyle),
+            styleVariant = VariantStyleInputHandler().handleInput(rawInput.variantStyle),
             targetDir = "$targetDir/$mainPath"
         )
     }

@@ -24,7 +24,7 @@ data class RawInput(
 
 data class ApplicationParameters(
     val languageVariant: LanguageVariant,
-    val variantStyle: StyleVariant,
+    val styleVariant: StyleVariant,
     val idType: ResourceIdType,
     val resourceName: String,
     val packageName: String,
@@ -49,7 +49,7 @@ class RawInputHandler {
             languageVariant = LanguageVariantInputHandler().handleInput(rawInput.languageVariant),
             resourceName = ResourceNameInputHandler().handleInput(rawInput.resourceName),
             packageName = PackageNameInputHandler().handleInput(rawInput.packageName),
-            variantStyle = VariantStyleInputHandler().handleInput(rawInput.variantStyle),
+            styleVariant = VariantStyleInputHandler().handleInput(rawInput.variantStyle),
             idType = ResourceIdTypeInputHandler().handleInput(rawInput.idType),
             targetDir = rawInput.targetDir ?: throw IllegalArgumentException("Target directory cannot be empty")
         )

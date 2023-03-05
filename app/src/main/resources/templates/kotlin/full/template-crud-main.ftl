@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
     info = Info(
         title = "${resourceNameUppercase}s API",
         version = "1.0.0",
-        description = "An API for a cats, capable of managing cats",
+        description = "An API for a ${resourceNameUppercase}, capable of managing ${resourceNameUppercase}",
         contact = Contact(name = "Mehmet Akif Tütüncü", url = "https://akif.dev"),
         license = License(
             name = "MIT License",
